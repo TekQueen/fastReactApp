@@ -4,6 +4,7 @@ import './App.css';
 import Page1 from './components/Page1';
 //import Page2 from './components/Page2';
 //import Page3 from './components/Page3';
+import AsyncComponent from './components/asyncComponent';
 
 class App extends Component {
   constructor(props) {
@@ -48,8 +49,12 @@ class App extends Component {
 
       if (route === 'page1') {
         return <Page1 onRouteChange = {this.onRouteChange} />
-      } else {
-        return <this.state.component onRouteChange = {this.onRouteChange} />
+      } else if (route === 'page2'){
+        const Page2 = AsyncComponent(() => import('./components/Page2'));
+        return <Page2 onRouteChange = {this.onRouteChange} />
+      } else if (route === 'page3') {
+        const Page3 = AsyncComponent(() => import('./components/Page3'));
+        return <Page3 onRouteChange = {this.onRouteChange} />
       }
   }
 }
