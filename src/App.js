@@ -4,16 +4,20 @@ import './App.css';
 import Page1 from './components/Page1';
 import Loadable from 'react-loadable';
 
-const Loading = () => <h1>LOADING ...</h1>
+function Loading({ pastDelay, error }) {
+  return pastDelay ? error? 'error' : <h3>Loading...</h3> : null;
+}
 
 const Page2 = Loadable({
   loader: () => import('./components/Page2'),
-  loading: Loading
+  loading: Loading,
+  delay: 0
 })
 
 const Page3 = Loadable({
   loader: () => import('./components/Page3'),
-  loading: Loading
+  loading: Loading,
+  delay: 0
 })
 
 class App extends Component {
