@@ -2,9 +2,19 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Page1 from './components/Page1';
-//import Page2 from './components/Page2';
-//import Page3 from './components/Page3';
-import AsyncComponent from './components/asyncComponent';
+import Loadable from 'react-loadable';
+
+const Loading = () => <h1>LOADING ...</h1>
+
+const Page2 = Loadable({
+  loader: () => import('./components/Page2'),
+  loading: Loading
+})
+
+const Page3 = Loadable({
+  loader: () => import('./components/Page3'),
+  loading: Loading
+})
 
 class App extends Component {
   constructor(props) {
@@ -16,32 +26,8 @@ class App extends Component {
     }
   }
 
-  // no need to bind
   onRouteChange = (route) => {
-    
-    // with code splitting
-
-    if(route === 'page1') {
-      this.setState({route});
-    } else if(route === 'page2') {
-      import('./components/Page2')
-      .then((Page2) => {
-        console.log(Page2);
-        this.setState({
-          route: route,
-          component: Page2.default
-        })
-      })
-    } else if(route === 'page3') {
-      import('./components/Page3')
-      .then((Page3) => {
-        this.setState({
-          route: route,
-          component: Page3.default
-        })
-      })
-    }
-
+    this.setState({ route })
   }
 
   render() {
@@ -50,10 +36,8 @@ class App extends Component {
       if (route === 'page1') {
         return <Page1 onRouteChange = {this.onRouteChange} />
       } else if (route === 'page2'){
-        const Page2 = AsyncComponent(() => import('./components/Page2'));
         return <Page2 onRouteChange = {this.onRouteChange} />
       } else if (route === 'page3') {
-        const Page3 = AsyncComponent(() => import('./components/Page3'));
         return <Page3 onRouteChange = {this.onRouteChange} />
       }
   }
